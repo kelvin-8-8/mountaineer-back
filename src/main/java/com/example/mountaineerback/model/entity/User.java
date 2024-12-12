@@ -1,4 +1,4 @@
 package com.example.mountaineerback.model.entity;
 
-public class Users {
+public class User {
 }
