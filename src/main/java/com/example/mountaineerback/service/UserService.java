@@ -17,8 +17,8 @@ public interface UserService {
 
 
     // 新增商品關注
-    public void addFavoriteProduct(Long userId, Long productId);
+
 
     // 移除商品關注
-    public void removeFavoriteProduct(Long userId, Long productId);
+
 }
