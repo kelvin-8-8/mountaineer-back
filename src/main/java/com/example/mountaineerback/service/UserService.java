@@ -1,24 +1,17 @@
 package com.example.mountaineerback.service;
 
-import com.example.mountaineerback.model.dto.LoginDTO;
+import com.example.mountaineerback.model.dto.LoginRequest;
+import com.example.mountaineerback.model.dto.RegisterRequest;
 import com.example.mountaineerback.model.dto.UserDTO;
+
 
 import java.util.Optional;
 
 public interface UserService {
-    Optional<UserDTO> findByUsername(String username);
-    Optional<UserDTO> login(LoginDTO loginDTO);
-    Optional<UserDTO> saveUser(UserDTO userDTO);
+//    Optional<UserDTO> findByUsername(String username);
+    Optional<UserDTO> login(LoginRequest loginRequest);
+    Optional<UserDTO> register(RegisterRequest registerRequest);
 
-    // 用戶關注列表(用戶關注那些商品)
-
-
-    // 商品關注列表(商品被那些用戶關注)
-
-
-    // 新增商品關注
-
-
-    // 移除商品關注
+    // 用戶
 
 }
