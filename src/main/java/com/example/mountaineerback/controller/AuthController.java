@@ -35,7 +35,7 @@ public class AuthController {
         // login 判斷比對
         Optional<UserDTO> optUserDTO = userService.login(loginRequest);
         if(optUserDTO.isEmpty()) {
-            return ResponseEntity.status(404).body(ApiResponse.error(404, "登入失敗"));
+            return ResponseEntity.status(403).body(ApiResponse.error(403, "登入失敗"));
         }
         // 存入 HttpSession 中
         session.setAttribute("userDTO", optUserDTO.get());
@@ -52,8 +52,20 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserDTO>> register(@RequestBody RegisterRequest registerRequest, HttpSession session) {
         Optional<UserDTO> optUserDTO = userService.register(registerRequest);
+        if(optUserDTO.isEmpty()) {
+            return ResponseEntity.status(403).body(ApiResponse.error(403, "未知錯誤"));
+        }
+
+        if(optUserDTO.get().getEmail().equals(registerRequest.getEmail()) && optUserDTO.get().getUsername().equals(registerRequest.getUsername())) {
+            return ResponseEntity.ok(ApiResponse.success("註冊成功", optUserDTO.get()));
+        }
+
         if(optUserDTO.get().getEmail().equals(registerRequest.getEmail())) {
-            return ResponseEntity.status(404).body(ApiResponse.error(404, "信箱重複！已經註冊過囉"));
+            return ResponseEntity.status(403).body(ApiResponse.error(403, "信箱已被註冊"));
+        }
+
+        if(optUserDTO.get().getUsername().equals(registerRequest.getUsername())) {
+            return ResponseEntity.status(403).body(ApiResponse.error(403, "使用者名稱已被註冊"));
         }
         return ResponseEntity.ok(ApiResponse.success("註冊成功", optUserDTO.get()));
     }
