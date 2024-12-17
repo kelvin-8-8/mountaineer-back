@@ -12,6 +12,6 @@ public class EquipmentImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "LONGTEXT")
-    private String imageBase64;
+    @Column(nullable = false, length = 255)
+    private String url;
 }
