@@ -1,5 +1,6 @@
 package com.example.mountaineerback.model.entity;
 
+import com.example.mountaineerback.model.enums.EQUIPMENT_TYPE;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

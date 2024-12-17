@@ -5,7 +5,6 @@ import com.example.mountaineerback.model.dto.RegisterRequest;
 import com.example.mountaineerback.model.dto.UserDTO;
 import com.example.mountaineerback.model.entity.User;
 import com.example.mountaineerback.repository.UserRepository;
-import com.example.mountaineerback.response.RegisterResponse;
 import com.example.mountaineerback.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static com.example.mountaineerback.model.entity.USER_ROLE.ROLE_GUEST;
+import static com.example.mountaineerback.model.enums.USER_ROLE.ROLE_GUEST;
 
 @Service
 public class UserServiceImpl implements UserService {

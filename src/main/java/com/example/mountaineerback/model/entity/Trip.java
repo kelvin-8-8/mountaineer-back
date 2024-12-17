@@ -1,5 +1,6 @@
 package com.example.mountaineerback.model.entity;
 
+import com.example.mountaineerback.model.enums.TRIP_STATUS;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -37,17 +40,33 @@ public class Trip {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // 與創立者的多對一關聯
+    // Trip User
     @ManyToOne
-    @JoinColumn(name = "creator_id", nullable = true)
-    private User creator;
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // 與隊伍申請的一對多關聯
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TripApply> applications;
 
     // 與參與使用者的多對多關聯
     @ManyToMany
     @JoinTable(
-            name = "trip_participants",
+            name = "trip_user",
             joinColumns = @JoinColumn(name = "trip_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> participants;
+    private Set<User> participants;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Trip trip)) return false;
+        return Objects.equals(id, trip.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

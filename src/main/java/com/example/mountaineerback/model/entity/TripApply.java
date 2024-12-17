@@ -5,13 +5,11 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Entity
-@Table(name = "`order`")
-public class Order {
-
+@Table(name = "trip_apply")
+public class TripApply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,16 +18,13 @@ public class Order {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // order 與 user 的關係是多對一關聯
-    // 創建user_id
+    // 申請的用戶
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    // order 與 order_item 的關係是一對多
-    // FetchType.EAGER 在查找 order 的同時一併找 OrderItem
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    //@OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
-    private List<OrderItem> items;
-
+    // 申請的隊伍
+    @ManyToOne
+    @JoinColumn(name = "trip_id", nullable = false)
+    private Trip trip;
 }

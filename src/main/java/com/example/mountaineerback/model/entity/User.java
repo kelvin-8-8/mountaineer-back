@@ -1,5 +1,6 @@
 package com.example.mountaineerback.model.entity;
 
+import com.example.mountaineerback.model.enums.USER_ROLE;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,18 +46,18 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    // 新增創立的隊伍關聯
-    @OneToMany(mappedBy = "creator")
+    // User Trip
+    @OneToMany(mappedBy = "user")
     private List<Trip> createdTrips;
 
     // 新增參與的隊伍關聯
     @ManyToMany(mappedBy = "participants")
-    private List<Trip> joinedTrips;
+    private Set<Trip> joinedTrips;
 
     @Override
     public boolean equals(Object o) {
         if (this == o ) return true;
-        if (o == null || getClass() != getClass()) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(id, user.id);
     }
