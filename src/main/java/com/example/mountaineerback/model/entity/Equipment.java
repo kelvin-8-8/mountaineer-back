@@ -24,6 +24,10 @@ public class Equipment {
     @Column(nullable = false)
     private Integer price;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EQUIPMENT_TYPE type;
+
     private String description;
 
     @OneToMany(mappedBy = "equipment")

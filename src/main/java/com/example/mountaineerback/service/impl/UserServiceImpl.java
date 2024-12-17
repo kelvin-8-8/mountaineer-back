@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.example.mountaineerback.model.entity.USER_ROLE.ROLE_GUEST;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -51,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
         if(optUserUserName.isEmpty() && optUserEmail.isEmpty()) {
             User user = modelMapper.map(registerRequest, User.class);
-            user.setRole("ROLE_GUEST"); //預設值
+            user.setRole(ROLE_GUEST); //預設值
             userRepository.save(user);
             return Optional.of(modelMapper.map(user, UserDTO.class));
         }

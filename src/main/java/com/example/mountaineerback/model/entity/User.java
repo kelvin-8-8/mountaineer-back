@@ -29,11 +29,14 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    private String trueName;
+
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String role;
+    private USER_ROLE role;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -42,4 +45,22 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
+    // 新增創立的隊伍關聯
+    @OneToMany(mappedBy = "creator")
+    private List<Trip> createdTrips;
+
+    // 新增參與的隊伍關聯
+    @ManyToMany(mappedBy = "participants")
+    private List<Trip> joinedTrips;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o ) return true;
+        if (o == null || getClass() != getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() { return Objects.hash(id); }
 }
