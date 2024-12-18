@@ -1,5 +1,6 @@
 package com.example.mountaineerback.model.entity;
 
+import com.example.mountaineerback.model.enums.ORDER_STATUS;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +14,10 @@ public class TripApply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ORDER_STATUS status;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

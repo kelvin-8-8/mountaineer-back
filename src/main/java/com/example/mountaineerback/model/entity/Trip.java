@@ -1,6 +1,6 @@
 package com.example.mountaineerback.model.entity;
 
-import com.example.mountaineerback.model.enums.TRIP_STATUS;
+import com.example.mountaineerback.model.enums.ORDER_STATUS;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,10 +31,6 @@ public class Trip {
 
     @Column(nullable = false)
     private Integer duration;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TRIP_STATUS status;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
