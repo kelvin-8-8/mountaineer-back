@@ -4,6 +4,7 @@ import com.example.mountaineerback.model.dto.LoginRequest;
 import com.example.mountaineerback.model.dto.RegisterRequest;
 import com.example.mountaineerback.model.dto.UserDTO;
 import com.example.mountaineerback.response.ApiResponse;
+import com.example.mountaineerback.response.RegisterResponse;
 import com.example.mountaineerback.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +82,28 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("註冊成功", optUserDTO.get()));
     }
 
-    // 修改
+    @GetMapping("/checkLogin")
+    public ResponseEntity<ApiResponse<Boolean>> checkLogin(HttpSession session) {
+        UserDTO userdto = (UserDTO) session.getAttribute("userDTO");
+        if(userdto == null) {
+            return ResponseEntity.ok(ApiResponse.success("未登入", false));
+        }
+        return ResponseEntity.ok(ApiResponse.success("已登入", true));
+    }
+
+    //確認身分
+    @GetMapping("/checkRole")
+    public ResponseEntity<ApiResponse<RegisterResponse>> checkRole(HttpSession session) {
+        UserDTO userdto = (UserDTO) session.getAttribute("userDTO");
+        if(userdto == null) {
+            return ResponseEntity.ok(ApiResponse.error(403, "沒有Session 或 Session已過期"));
+        }
+        RegisterResponse registerresponse = new RegisterResponse(userdto.getId(), userdto.getUsername(), userdto.getTrueName(),userdto.getEmail(),userdto.getRole());
+        return ResponseEntity.ok(ApiResponse.success("已確認身分", registerresponse));
+    }
+
+
+    // 修改個人頁面
     // TODO 根據前端個人資料頁面修改
 
     // 管理員
