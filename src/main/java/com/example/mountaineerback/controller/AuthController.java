@@ -33,6 +33,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+    // 登入
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<UserDTO>> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         // login 判斷比對
@@ -47,6 +48,7 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("登入成功", optUserDTO.get()));
     }
 
+    // 登出
     @GetMapping("/logout")
     public ResponseEntity<ApiResponse<String>> logout(HttpSession session) {
 //        session.removeAttribute("userDTO");
@@ -54,6 +56,7 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("登出成功", "null"));
     }
 
+    // 註冊
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserDTO>> register(@RequestBody RegisterRequest registerRequest, HttpSession session) {
 
@@ -78,8 +81,9 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success("註冊成功", optUserDTO.get()));
     }
 
+    // 修改
+    // TODO 根據前端個人資料頁面修改
+
+    // 管理員
+    // 權限修改(升級 降級 自降)
 }
-//    @GetMapping("/validate")
-//    public ResponseEntity<ApiResponse<LoginDTO>> validate(HttpSession session) {
-//
-//    }
