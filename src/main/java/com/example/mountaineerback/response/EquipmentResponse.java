@@ -1,4 +1,5 @@
-package com.example.mountaineerback.model.dto;
+package com.example.mountaineerback.response;
+
 
 import com.example.mountaineerback.model.entity.EquipmentImage;
 import com.example.mountaineerback.model.entity.OrderItem;
@@ -12,11 +13,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EquipmentDTO {
+public class EquipmentResponse {
     private Long id;
     private String name;
     private Integer price;
     private EQUIPMENT_TYPE type;
     private String description;
+    private List<OrderItem> orderItems;
     private EquipmentImage equipmentImage;
 }

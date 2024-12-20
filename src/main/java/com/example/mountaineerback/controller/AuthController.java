@@ -1,7 +1,7 @@
 package com.example.mountaineerback.controller;
 
-import com.example.mountaineerback.model.dto.LoginRequest;
-import com.example.mountaineerback.model.dto.RegisterRequest;
+import com.example.mountaineerback.model.request.LoginRequest;
+import com.example.mountaineerback.model.request.RegisterRequest;
 import com.example.mountaineerback.model.dto.UserDTO;
 import com.example.mountaineerback.response.ApiResponse;
 import com.example.mountaineerback.response.RegisterResponse;
