@@ -17,7 +17,13 @@ import java.util.List;
 
 /*
  * WEB REST API
- */
+ * ----------------------------------
+ * Servlet-Path: /equip
+ * ----------------------------------
+ * GET              全部裝備
+ * GET  /{type}     用類型找裝備
+ * POST /register   註冊
+ * */
 @Slf4j
 @RestController
 @RequestMapping("/equip")

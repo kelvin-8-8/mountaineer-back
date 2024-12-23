@@ -47,7 +47,7 @@ public class User {
     private List<Order> orders;
 
     // User Trip
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "creator")
     private List<Trip> createdTrips;
 
     // 新增參與的隊伍關聯

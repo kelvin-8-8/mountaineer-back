@@ -38,8 +38,8 @@ public class Trip {
 
     // Trip User
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "creator_id")
+    private User creator;
 
     // 與隊伍申請的一對多關聯
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)

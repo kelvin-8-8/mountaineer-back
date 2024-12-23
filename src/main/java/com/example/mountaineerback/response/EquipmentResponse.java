@@ -19,6 +19,5 @@ public class EquipmentResponse {
     private Integer price;
     private EQUIPMENT_TYPE type;
     private String description;
-    private List<OrderItem> orderItems;
     private EquipmentImage equipmentImage;
 }
