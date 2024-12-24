@@ -1,4 +1,4 @@
-package com.example.mountaineerback.response;
+package com.example.mountaineerback.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

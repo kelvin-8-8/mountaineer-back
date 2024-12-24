@@ -2,14 +2,17 @@ package com.example.mountaineerback.service.impl;
 
 import com.example.mountaineerback.model.dto.OrderDTO;
 import com.example.mountaineerback.model.dto.OrderItemDTO;
+import com.example.mountaineerback.model.entity.Equipment;
 import com.example.mountaineerback.model.entity.Order;
 import com.example.mountaineerback.model.entity.OrderItem;
 import com.example.mountaineerback.model.entity.User;
 import com.example.mountaineerback.model.request.OrderRequest;
+import com.example.mountaineerback.repository.EquipmentRepository;
 import com.example.mountaineerback.repository.OrderItemRepository;
 import com.example.mountaineerback.repository.OrderRepository;
 import com.example.mountaineerback.repository.UserRepository;
 import com.example.mountaineerback.service.OrderService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.example.mountaineerback.model.enums.ORDER_STATUS.STATUS_WAIT;
+
+@Transactional
 @Service
 public class OrderServiceImpl implements OrderService{
 
@@ -33,6 +39,9 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private EquipmentRepository equipmentRepository;
+
     @Override
     public List<OrderDTO> findOrderByUserId(Long userId) {
         return orderRepository.findByUserId(userId).stream()
@@ -40,36 +49,39 @@ public class OrderServiceImpl implements OrderService{
                 .collect(Collectors.toList());
     }
 
+    // TODO
     @Override
     public OrderDTO addOrder(Long userId, OrderRequest orderRequest) {
-
         // 1. 找 User
         Optional<User> optUser = userRepository.findById(userId);
-        if(optUser.isEmpty()) return null;
+        if (optUser.isEmpty()) return null;
 
-        // 2. 建立訂單 設定關聯關係
+        // 2. 建立訂單並設置關聯
         Order order = new Order();
         order.setUser(optUser.get());
-
-        // 3. TODO 非聯集操作的做法
-        // 4.
-
-        // 3.
-        List<OrderItemDTO> items = orderRequest.getItems();
-        List<OrderItem> orderItems = items.stream()
-                .map(item -> {
-                    OrderItem orderItem = modelMapper.map(item, OrderItem.class);
-                    orderItem.setOrder(order);
-                    return orderItem;
-                })
-                .collect(Collectors.toList());
-
-
-        // 4. order
-        order.setItems(orderItems);
         order.setStartDate(orderRequest.getStartDate());
         order.setDuration(orderRequest.getDuration());
+        order.setStatus(STATUS_WAIT);
 
+        // 3. 建立 OrderItems 並設置雙向關聯
+        List<OrderItemDTO> items = orderRequest.getItems();
+        items.forEach(itemDTO -> {
+            Optional<Equipment> optEquipment = equipmentRepository.findById(itemDTO.getEquipment().getId());
+            if (optEquipment.isPresent()) {
+                // 創建 OrderItem 並關聯
+                OrderItem orderItem = new OrderItem();
+                orderItem.setQuantity(itemDTO.getQuantity());
+                orderItem.setEquipment(optEquipment.get());
+                order.addItem(orderItem); // 使用輔助方法設置關聯
+            } else {
+                System.out.println("Equipment not found with id: " + itemDTO.getEquipment().getId());
+            }
+        });
+
+        // 4. 保存 Order（會級聯保存 OrderItems）
+        orderRepository.save(order);
+
+        // 5. 返回 DTO
         return modelMapper.map(order, OrderDTO.class);
     }
 }

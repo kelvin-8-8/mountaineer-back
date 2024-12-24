@@ -2,6 +2,7 @@ package com.example.mountaineerback.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -23,6 +24,12 @@ public class OrderItem {
     // order_item 與 order 的關係是多對一關聯
     @ManyToOne
     @JoinColumn(name = "order_id")
+    // 阻止lombok改toString，為了sout() debug用
+    @ToString.Exclude
     private Order order;
 
 }
+
+
+
+

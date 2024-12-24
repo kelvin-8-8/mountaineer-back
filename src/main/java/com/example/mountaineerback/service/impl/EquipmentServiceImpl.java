@@ -26,7 +26,12 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public List<EquipmentDTO> getAllEquipment() {
         return equipmentRepository.findAll().stream()
-                .map(equipment -> modelMapper.map(equipment, EquipmentDTO.class))
+                .map(equipment -> {
+                    EquipmentDTO equipmentDTO = modelMapper.map(equipment, EquipmentDTO.class);
+                    if (equipment.getEquipmentImage() != null) {
+                        equipmentDTO.setUrl(equipment.getEquipmentImage().getUrl());
+                    }
+                    return equipmentDTO;} )
                 .collect(Collectors.toList());
     }
 

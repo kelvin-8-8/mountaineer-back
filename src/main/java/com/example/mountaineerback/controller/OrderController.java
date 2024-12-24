@@ -3,7 +3,7 @@ package com.example.mountaineerback.controller;
 import com.example.mountaineerback.model.dto.OrderDTO;
 import com.example.mountaineerback.model.dto.UserDTO;
 import com.example.mountaineerback.model.request.OrderRequest;
-import com.example.mountaineerback.response.ApiResponse;
+import com.example.mountaineerback.model.response.ApiResponse;
 import com.example.mountaineerback.service.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ApiResponse<OrderDTO>> getOrder(@PathVariable Long id) {}
 
     @PostMapping("/checkout")
     public ResponseEntity<ApiResponse<OrderDTO>> createOrder(@RequestBody OrderRequest orderRequest, HttpSession session) {

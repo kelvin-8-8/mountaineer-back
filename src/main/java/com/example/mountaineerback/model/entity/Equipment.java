@@ -34,7 +34,7 @@ public class Equipment {
     @OneToMany(mappedBy = "equipment")
     private List<OrderItem> orderItems;
 
-    // 與 ProductImage 的一對一關聯 (單向)
+    // 與 EquipmentImage 的一對一關聯 (單向)
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "equipment_image_id")
     private EquipmentImage equipmentImage;

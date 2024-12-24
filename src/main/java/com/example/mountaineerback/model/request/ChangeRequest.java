@@ -1,4 +1,4 @@
-package com.example.mountaineerback.response;
+package com.example.mountaineerback.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterResponse {
-    private Long id;
+public class ChangeRequest {
     private String username;
     private String trueName;
     private String email;
-    private String role;
+    private String password;
+    private String newPassword ;
 
 }

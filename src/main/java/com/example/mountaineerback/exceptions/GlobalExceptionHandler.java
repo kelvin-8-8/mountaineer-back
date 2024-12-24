@@ -1,6 +1,6 @@
 package com.example.mountaineerback.exceptions;
 
-import com.example.mountaineerback.response.ApiResponse;
+import com.example.mountaineerback.model.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;

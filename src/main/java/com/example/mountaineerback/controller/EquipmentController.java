@@ -3,11 +3,9 @@ package com.example.mountaineerback.controller;
 
 import com.example.mountaineerback.model.dto.EquipmentDTO;
 import com.example.mountaineerback.model.enums.EQUIPMENT_TYPE;
-import com.example.mountaineerback.response.ApiResponse;
-import com.example.mountaineerback.response.EquipmentResponse;
+import com.example.mountaineerback.model.response.ApiResponse;
 import com.example.mountaineerback.service.EquipmentService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

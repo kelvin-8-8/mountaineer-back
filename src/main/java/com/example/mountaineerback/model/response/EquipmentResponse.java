@@ -1,4 +1,4 @@
-package com.example.mountaineerback.response;
+package com.example.mountaineerback.model.response;
 
 import com.example.mountaineerback.model.entity.EquipmentImage;
 import com.example.mountaineerback.model.entity.OrderItem;

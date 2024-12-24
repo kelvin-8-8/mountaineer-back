@@ -1,10 +1,12 @@
 package com.example.mountaineerback.controller;
 
+import com.example.mountaineerback.model.request.ChangeRequest;
 import com.example.mountaineerback.model.request.LoginRequest;
 import com.example.mountaineerback.model.request.RegisterRequest;
 import com.example.mountaineerback.model.dto.UserDTO;
-import com.example.mountaineerback.response.ApiResponse;
-import com.example.mountaineerback.response.RegisterResponse;
+import com.example.mountaineerback.model.response.ApiResponse;
+import com.example.mountaineerback.model.response.LoginResponse;
+import com.example.mountaineerback.model.response.RegisterResponse;
 import com.example.mountaineerback.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,8 @@ import java.util.Optional;
  * POST /login      登入
  * GET  /logout     登出
  * POST /register   註冊
+ * POST /change     修改
+ *
  * */
 
 @Slf4j
@@ -35,6 +39,7 @@ public class AuthController {
     private UserService userService;
 
     // 登入
+    // TODO 回傳值不應該有password
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<UserDTO>> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         // login 判斷比對
@@ -47,6 +52,7 @@ public class AuthController {
         session.setAttribute("userDTO", optUserDTO.get());
         log.info("使用者:{} email:{}. 登入成功", optUserDTO.get().getUsername(), optUserDTO.get().getEmail());
         return ResponseEntity.ok(ApiResponse.success("登入成功", optUserDTO.get()));
+
     }
 
     // 登出
@@ -59,8 +65,9 @@ public class AuthController {
 
     // 註冊
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<UserDTO>> register(@RequestBody RegisterRequest registerRequest, HttpSession session) {
+    public ResponseEntity<ApiResponse<LoginResponse>> register(@RequestBody RegisterRequest registerRequest, HttpSession session) {
 
+        // 先確認資料庫
         log.info("使用者:{} email:{}. 開始註冊", registerRequest.getUsername(), registerRequest.getEmail());
         Optional<UserDTO> optUserDTO = userService.register(registerRequest);
         if(optUserDTO.isEmpty()) {
@@ -68,7 +75,10 @@ public class AuthController {
         }
 
         if(optUserDTO.get().getEmail().equals(registerRequest.getEmail()) && optUserDTO.get().getUsername().equals(registerRequest.getUsername())) {
-            return ResponseEntity.ok(ApiResponse.success("註冊成功", optUserDTO.get()));
+
+            log.info("使用者:{} email:{}. 註冊成功.", registerRequest.getUsername(), registerRequest.getEmail());
+            LoginResponse loginResponse = new LoginResponse(optUserDTO.get().getId(),optUserDTO.get().getUsername(),optUserDTO.get().getTrueName(),optUserDTO.get().getEmail(),optUserDTO.get().getRole(),optUserDTO.get().getCreatedAt());
+            return ResponseEntity.ok(ApiResponse.success("註冊成功", loginResponse));
         }
 
         if(optUserDTO.get().getEmail().equals(registerRequest.getEmail())) {
@@ -78,8 +88,11 @@ public class AuthController {
         if(optUserDTO.get().getUsername().equals(registerRequest.getUsername())) {
             return ResponseEntity.status(403).body(ApiResponse.error(403, "使用者名稱已被註冊"));
         }
-        log.info("使用者:{} email:{}. 註冊成功.", registerRequest.getUsername(), registerRequest.getEmail());
-        return ResponseEntity.ok(ApiResponse.success("註冊成功", optUserDTO.get()));
+
+        // 要有個 return 在 if 之外，不會運行到這邊
+        log.info("使用者:{} email:{}. 不會跑到這邊才對啊.", registerRequest.getUsername(), registerRequest.getEmail());
+        LoginResponse loginResponse = new LoginResponse(optUserDTO.get().getId(),optUserDTO.get().getUsername(),optUserDTO.get().getTrueName(),optUserDTO.get().getEmail(),optUserDTO.get().getRole(),optUserDTO.get().getCreatedAt());
+        return ResponseEntity.ok(ApiResponse.success("不會跑到這邊才對啊", loginResponse));
     }
 
     @GetMapping("/checkLogin")
@@ -103,17 +116,23 @@ public class AuthController {
     }
 
 
-    // 修改個人頁面
-    // TODO 根據前端個人資料頁面修改
+    // 修改個人資料
     @PostMapping("/change")
-    public ResponseEntity<ApiResponse<RegisterResponse>> changeProfile(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<ApiResponse<RegisterResponse>> changeProfile(@RequestBody ChangeRequest changeRequest, HttpSession session) {
 
-        Optional<UserDTO> optUserDTO = userService.register(registerRequest);
-        // TODO 確認Service沒有問題
+        UserDTO userdto = (UserDTO) session.getAttribute("userDTO");
+        if(userdto == null) {
+            return ResponseEntity.ok(ApiResponse.error(403, "沒有Session 或 Session已過期"));
+        }
+        Long userId = ((UserDTO) session.getAttribute("userDTO")).getId();
 
+        Optional<UserDTO> optUserDTO = userService.update(userId, changeRequest);
 
-        RegisterResponse registerResponse = new RegisterResponse();
-        return ResponseEntity.ok(ApiResponse.success("已確認身分", registerResponse));
+        if(optUserDTO.isEmpty()) {
+            return ResponseEntity.ok(ApiResponse.error(403, "修改錯誤"));
+        }
+        RegisterResponse registerResponse = new RegisterResponse(optUserDTO.get().getId(), optUserDTO.get().getUsername(),optUserDTO.get().getTrueName(),optUserDTO.get().getEmail(),optUserDTO.get().getRole());
+        return ResponseEntity.ok(ApiResponse.success("修改資料成功", registerResponse));
     }
 
     // 管理員
