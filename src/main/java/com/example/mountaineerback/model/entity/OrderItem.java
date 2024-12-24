@@ -15,9 +15,9 @@ public class OrderItem {
     // 商品數量
     private int quantity;
 
-    // order_item 與 product 的關係是多對一關聯
+    // order_item 與 equipment 的關係是多對一關聯
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "equipment_id")
     private Equipment equipment;
 
     // order_item 與 order 的關係是多對一關聯

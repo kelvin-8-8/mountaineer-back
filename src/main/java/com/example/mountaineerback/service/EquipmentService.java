@@ -15,5 +15,5 @@ public interface EquipmentService {
 
     List<EquipmentDTO> getEquipmentByType(EQUIPMENT_TYPE type);
 
-//    Equipment addEquipment(EquipmentDTO equipmentDTO);
+    EquipmentDTO addEquipment(EquipmentDTO equipmentDTO);
 }

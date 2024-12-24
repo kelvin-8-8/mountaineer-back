@@ -1,13 +1,9 @@
 package com.example.mountaineerback.model.dto;
 
-import com.example.mountaineerback.model.entity.EquipmentImage;
-import com.example.mountaineerback.model.entity.OrderItem;
 import com.example.mountaineerback.model.enums.EQUIPMENT_TYPE;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,5 +14,6 @@ public class EquipmentDTO {
     private Integer price;
     private EQUIPMENT_TYPE type;
     private String description;
-    private EquipmentImage equipmentImage;
+
+    private String url;
 }

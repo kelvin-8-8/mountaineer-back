@@ -1,6 +1,5 @@
 package com.example.mountaineerback.response;
 
-
 import com.example.mountaineerback.model.entity.EquipmentImage;
 import com.example.mountaineerback.model.entity.OrderItem;
 import com.example.mountaineerback.model.enums.EQUIPMENT_TYPE;
@@ -19,5 +18,6 @@ public class EquipmentResponse {
     private Integer price;
     private EQUIPMENT_TYPE type;
     private String description;
-    private EquipmentImage equipmentImage;
+
+    private String url;
 }

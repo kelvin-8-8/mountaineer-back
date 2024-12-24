@@ -98,13 +98,23 @@ public class AuthController {
         if(userdto == null) {
             return ResponseEntity.ok(ApiResponse.error(403, "沒有Session 或 Session已過期"));
         }
-        RegisterResponse registerresponse = new RegisterResponse(userdto.getId(), userdto.getUsername(), userdto.getTrueName(),userdto.getEmail(),userdto.getRole());
-        return ResponseEntity.ok(ApiResponse.success("已確認身分", registerresponse));
+        RegisterResponse registerResponse = new RegisterResponse(userdto.getId(), userdto.getUsername(), userdto.getTrueName(),userdto.getEmail(),userdto.getRole());
+        return ResponseEntity.ok(ApiResponse.success("已確認身分", registerResponse));
     }
 
 
     // 修改個人頁面
     // TODO 根據前端個人資料頁面修改
+    @PostMapping("/change")
+    public ResponseEntity<ApiResponse<RegisterResponse>> changeProfile(@RequestBody RegisterRequest registerRequest) {
+
+        Optional<UserDTO> optUserDTO = userService.register(registerRequest);
+        // TODO 確認Service沒有問題
+
+
+        RegisterResponse registerResponse = new RegisterResponse();
+        return ResponseEntity.ok(ApiResponse.success("已確認身分", registerResponse));
+    }
 
     // 管理員
     // 權限修改(升級 降級 自降)

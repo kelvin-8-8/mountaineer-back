@@ -2,6 +2,7 @@ package com.example.mountaineerback.service.impl;
 
 import com.example.mountaineerback.model.dto.EquipmentDTO;
 import com.example.mountaineerback.model.entity.Equipment;
+import com.example.mountaineerback.model.entity.EquipmentImage;
 import com.example.mountaineerback.model.enums.EQUIPMENT_TYPE;
 import com.example.mountaineerback.repository.EquipmentRepository;
 import com.example.mountaineerback.service.EquipmentService;
@@ -38,7 +39,19 @@ public class EquipmentServiceImpl implements EquipmentService {
                 .map(equipment -> modelMapper.map(equipment, EquipmentDTO.class))
                 .collect(Collectors.toList());
     }
-//
-//    @Override
-//    Equipment addEquipment(EquipmentDTO equipmentDTO);
+
+    @Override
+    public EquipmentDTO addEquipment(EquipmentDTO equipmentDTO) {
+        // DTO 轉 entity
+        Equipment equipment = modelMapper.map(equipmentDTO, Equipment.class);
+
+        //
+        EquipmentImage equipmentImage = new EquipmentImage();
+        equipmentImage.setUrl(equipmentDTO.getUrl());
+        equipment.setEquipmentImage(equipmentImage);
+
+        equipmentRepository.save(equipment);
+
+        return modelMapper.map(equipment, EquipmentDTO.class);
+    }
 }

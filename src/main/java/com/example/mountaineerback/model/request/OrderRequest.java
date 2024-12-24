@@ -1,7 +1,6 @@
-package com.example.mountaineerback.model.dto;
+package com.example.mountaineerback.model.request;
 
-import com.example.mountaineerback.model.entity.OrderItem;
-import com.example.mountaineerback.model.entity.User;
+import com.example.mountaineerback.model.dto.OrderItemDTO;
 import com.example.mountaineerback.model.enums.ORDER_STATUS;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,11 +13,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDTO {
-    private Long id;
+public class OrderRequest {
+
     private LocalDate startDate;
     private Integer duration;
-    private LocalDateTime createdAt;
-    private ORDER_STATUS status;
     private List<OrderItemDTO> items;
 }
