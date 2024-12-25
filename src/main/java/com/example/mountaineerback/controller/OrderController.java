@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /*
  * WEB REST API
@@ -27,8 +29,22 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ApiResponse<OrderDTO>> getOrder(@PathVariable Long id) {}
+    // 獲取自己的訂單
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<OrderDTO>>> getOrder(HttpSession session) {
+        UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
+        List<OrderDTO> orderDTO = orderService.findOrderByUserId(userDTO.getId());
+        return ResponseEntity.ok(ApiResponse.success("成功取得你的訂單", orderDTO));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<OrderDTO>>> getAllOrder() {
+        List<OrderDTO> orderDTO = orderService.findAllOrder();
+        return ResponseEntity.ok(ApiResponse.success("成功取得你的訂單", orderDTO));
+    }
+
+    @GetMapping("/{type}")
+
 
     @PostMapping("/checkout")
     public ResponseEntity<ApiResponse<OrderDTO>> createOrder(@RequestBody OrderRequest orderRequest, HttpSession session) {

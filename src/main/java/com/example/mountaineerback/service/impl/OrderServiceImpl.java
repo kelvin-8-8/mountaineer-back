@@ -49,7 +49,13 @@ public class OrderServiceImpl implements OrderService{
                 .collect(Collectors.toList());
     }
 
-    // TODO
+    @Override
+    public List<OrderDTO> findAllOrder() {
+        return orderRepository.findAll().stream()
+                .map(order -> modelMapper.map(order, OrderDTO.class))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public OrderDTO addOrder(Long userId, OrderRequest orderRequest) {
         // 1. 找 User
@@ -66,19 +72,21 @@ public class OrderServiceImpl implements OrderService{
         // 3. 建立 OrderItems 並設置雙向關聯
         List<OrderItemDTO> items = orderRequest.getItems();
         items.forEach(itemDTO -> {
-            Optional<Equipment> optEquipment = equipmentRepository.findById(itemDTO.getEquipment().getId());
+            Optional<Equipment> optEquipment = equipmentRepository.findById(itemDTO.getId());
             if (optEquipment.isPresent()) {
                 // 創建 OrderItem 並關聯
                 OrderItem orderItem = new OrderItem();
                 orderItem.setQuantity(itemDTO.getQuantity());
                 orderItem.setEquipment(optEquipment.get());
+                orderItem.setOrder(order);
                 order.addItem(orderItem); // 使用輔助方法設置關聯
             } else {
-                System.out.println("Equipment not found with id: " + itemDTO.getEquipment().getId());
+                System.out.println("Equipment not found with id: " + itemDTO.getId());
             }
         });
 
         // 4. 保存 Order（會級聯保存 OrderItems）
+
         orderRepository.save(order);
 
         // 5. 返回 DTO

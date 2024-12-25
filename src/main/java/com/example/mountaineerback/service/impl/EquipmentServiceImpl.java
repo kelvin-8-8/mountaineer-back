@@ -4,6 +4,7 @@ import com.example.mountaineerback.model.dto.EquipmentDTO;
 import com.example.mountaineerback.model.entity.Equipment;
 import com.example.mountaineerback.model.entity.EquipmentImage;
 import com.example.mountaineerback.model.enums.EQUIPMENT_TYPE;
+import com.example.mountaineerback.model.request.EquipmentRequest;
 import com.example.mountaineerback.repository.EquipmentRepository;
 import com.example.mountaineerback.service.EquipmentService;
 import org.modelmapper.ModelMapper;
@@ -38,6 +39,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 //    @Override
 //    Optional<EquipmentDTO> getEquipmentByName(String name);
 //
+    // TODO 還沒測試過
     @Override
     public List<EquipmentDTO> getEquipmentByType(EQUIPMENT_TYPE type) {
         return equipmentRepository.findByType(type).stream()
@@ -45,18 +47,24 @@ public class EquipmentServiceImpl implements EquipmentService {
                 .collect(Collectors.toList());
     }
 
+    // TODO 確認是否存的進去
     @Override
-    public EquipmentDTO addEquipment(EquipmentDTO equipmentDTO) {
+    public EquipmentDTO addEquipment(EquipmentRequest equipmentRequest) {
         // DTO 轉 entity
-        Equipment equipment = modelMapper.map(equipmentDTO, Equipment.class);
+        Equipment equipment = modelMapper.map(equipmentRequest, Equipment.class);
 
-        //
+        // 跟 image 關聯
         EquipmentImage equipmentImage = new EquipmentImage();
-        equipmentImage.setUrl(equipmentDTO.getUrl());
+        equipmentImage.setUrl(equipmentRequest.getUrl());
         equipment.setEquipmentImage(equipmentImage);
 
-        equipmentRepository.save(equipment);
+        System.out.println(equipment);
+//        equipmentRepository.save(equipment);
 
-        return modelMapper.map(equipment, EquipmentDTO.class);
+        EquipmentDTO equipmentDTO = modelMapper.map(equipment, EquipmentDTO.class);
+        equipmentDTO.setUrl(equipmentRequest.getUrl());
+        System.out.println(equipmentDTO);
+
+        return equipmentDTO;
     }
 }

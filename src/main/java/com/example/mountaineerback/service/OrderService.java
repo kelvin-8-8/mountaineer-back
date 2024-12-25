@@ -11,5 +11,7 @@ public interface OrderService {
     // 根據使用者id找到
     public List<OrderDTO> findOrderByUserId(Long userId);
 
+    public List<OrderDTO> findAllOrder();
+
     public OrderDTO addOrder(Long userid, OrderRequest orderRequest);
 }

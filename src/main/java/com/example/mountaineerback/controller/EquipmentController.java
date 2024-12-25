@@ -3,6 +3,7 @@ package com.example.mountaineerback.controller;
 
 import com.example.mountaineerback.model.dto.EquipmentDTO;
 import com.example.mountaineerback.model.enums.EQUIPMENT_TYPE;
+import com.example.mountaineerback.model.request.EquipmentRequest;
 import com.example.mountaineerback.model.response.ApiResponse;
 import com.example.mountaineerback.service.EquipmentService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,7 @@ public class EquipmentController {
         return ResponseEntity.ok(ApiResponse.success("找全部裝備", equipmentDTO));
     }
 
+    // TODO 還沒測試過
     @GetMapping("/{type}")
     public ResponseEntity<ApiResponse<List<EquipmentDTO>>> getEquipmentType(@PathVariable String type) {
         //將傳入的 String 轉換成 Enum type
@@ -46,10 +48,11 @@ public class EquipmentController {
         return ResponseEntity.ok(ApiResponse.success("利用type更新裝備", equipmentDTO));
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<EquipmentDTO>> addEquipment(@RequestBody EquipmentDTO equipmentDTO) {
-        EquipmentDTO responseEquipmentDTO =  equipmentService.addEquipment(equipmentDTO);
-        return ResponseEntity.ok(ApiResponse.success("新增裝備成功", responseEquipmentDTO));
+    // FIXME 修改ing
+    @GetMapping("/add")
+    public ResponseEntity<ApiResponse<EquipmentDTO>> addEquipment(@RequestBody EquipmentRequest equipmentRequest) {
+        EquipmentDTO equipmentDTO =  equipmentService.addEquipment(equipmentRequest);
+        return ResponseEntity.ok(ApiResponse.success("新增裝備成功", equipmentDTO));
     }
 
 }
