@@ -39,7 +39,7 @@ public class AuthController {
     private UserService userService;
 
     // 登入
-    // TODO 回傳值不應該有password
+    // FIXME 回傳值不應該有password
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<UserDTO>> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         // login 判斷比對

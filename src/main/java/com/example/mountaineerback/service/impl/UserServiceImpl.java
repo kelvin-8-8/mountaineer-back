@@ -54,7 +54,9 @@ public class UserServiceImpl implements UserService {
         if(optUserUserName.isEmpty() && optUserEmail.isEmpty()) {
             User user = modelMapper.map(registerRequest, User.class);
             user.setRole(ROLE_GUEST); //預設值
+            System.out.println("Before" + user);
             userRepository.save(user);
+            System.out.println("After" + user);
             return Optional.of(modelMapper.map(user, UserDTO.class));
         }
 

@@ -43,8 +43,6 @@ public class OrderController {
         return ResponseEntity.ok(ApiResponse.success("成功取得你的訂單", orderDTO));
     }
 
-    @GetMapping("/{type}")
-
 
     @PostMapping("/checkout")
     public ResponseEntity<ApiResponse<OrderDTO>> createOrder(@RequestBody OrderRequest orderRequest, HttpSession session) {

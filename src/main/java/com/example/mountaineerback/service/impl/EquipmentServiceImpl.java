@@ -5,8 +5,10 @@ import com.example.mountaineerback.model.entity.Equipment;
 import com.example.mountaineerback.model.entity.EquipmentImage;
 import com.example.mountaineerback.model.enums.EQUIPMENT_TYPE;
 import com.example.mountaineerback.model.request.EquipmentRequest;
+import com.example.mountaineerback.repository.EquipmentImageRepository;
 import com.example.mountaineerback.repository.EquipmentRepository;
 import com.example.mountaineerback.service.EquipmentService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +17,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class EquipmentServiceImpl implements EquipmentService {
 
     @Autowired
     private EquipmentRepository equipmentRepository;
+
+    @Autowired
+    private EquipmentImageRepository equipmentImageRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -47,7 +53,7 @@ public class EquipmentServiceImpl implements EquipmentService {
                 .collect(Collectors.toList());
     }
 
-    // TODO 確認是否存的進去
+    //
     @Override
     public EquipmentDTO addEquipment(EquipmentRequest equipmentRequest) {
         // DTO 轉 entity
@@ -56,15 +62,13 @@ public class EquipmentServiceImpl implements EquipmentService {
         // 跟 image 關聯
         EquipmentImage equipmentImage = new EquipmentImage();
         equipmentImage.setUrl(equipmentRequest.getUrl());
+        System.out.println(equipmentImage);
         equipment.setEquipmentImage(equipmentImage);
 
-        System.out.println(equipment);
-//        equipmentRepository.save(equipment);
+        equipment = equipmentRepository.save(equipment);
 
         EquipmentDTO equipmentDTO = modelMapper.map(equipment, EquipmentDTO.class);
         equipmentDTO.setUrl(equipmentRequest.getUrl());
-        System.out.println(equipmentDTO);
-
         return equipmentDTO;
     }
 }
