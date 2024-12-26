@@ -33,6 +33,6 @@ build/
 .vscode/
 
 # 忽略 金鑰文件
-*.env
+.env
 .log
 logs/

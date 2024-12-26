@@ -12,9 +12,11 @@ public interface EquipmentService {
 
     List<EquipmentDTO> getAllEquipment();
 
-//    Optional<EquipmentDTO> getEquipmentByName(String name);
-
     List<EquipmentDTO> getEquipmentByType(EQUIPMENT_TYPE type);
 
     EquipmentDTO addEquipment(EquipmentRequest equipmentRequest);
+
+    Boolean deleteEquipment(Long id);
+
+    Optional<EquipmentDTO> changeEquipment( EquipmentRequest equipmentRequest);
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EquipmentRequest {
 
+    private Long id;
     private String name;
     private Integer price;
     private String type;

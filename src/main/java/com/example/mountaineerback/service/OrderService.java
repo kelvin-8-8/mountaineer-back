@@ -8,10 +8,18 @@ import java.util.List;
 
 public interface OrderService {
 
-    // 根據使用者id找到
+    // 找到 根據使用者id
     public List<OrderDTO> findOrderByUserId(Long userId);
 
+    // 找到 所有
     public List<OrderDTO> findAllOrder();
 
+    // 新增
     public OrderDTO addOrder(Long userid, OrderRequest orderRequest);
+
+    // 刪除
+    // TODO
+
+    //
+
 }

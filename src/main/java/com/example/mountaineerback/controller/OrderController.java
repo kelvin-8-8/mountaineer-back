@@ -37,15 +37,17 @@ public class OrderController {
         return ResponseEntity.ok(ApiResponse.success("成功取得你的訂單", orderDTO));
     }
 
+    // 獲取所有
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<OrderDTO>>> getAllOrder() {
         List<OrderDTO> orderDTO = orderService.findAllOrder();
-        return ResponseEntity.ok(ApiResponse.success("成功取得你的訂單", orderDTO));
+        return ResponseEntity.ok(ApiResponse.success("成功取得所有的訂單", orderDTO));
     }
 
-
+    // 新增
     @PostMapping("/checkout")
     public ResponseEntity<ApiResponse<OrderDTO>> createOrder(@RequestBody OrderRequest orderRequest, HttpSession session) {
+        System.out.println(orderRequest);
         UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
         OrderDTO orderDTO = orderService.addOrder(userDTO.getId(),orderRequest);
         return ResponseEntity.ok(ApiResponse.success("新增訂單成功", orderDTO));

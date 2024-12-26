@@ -62,15 +62,18 @@ public class OrderServiceImpl implements OrderService{
         Optional<User> optUser = userRepository.findById(userId);
         if (optUser.isEmpty()) return null;
 
+
         // 2. 建立訂單並設置關聯
         Order order = new Order();
         order.setUser(optUser.get());
         order.setStartDate(orderRequest.getStartDate());
         order.setDuration(orderRequest.getDuration());
         order.setStatus(STATUS_WAIT);
+        System.out.println("orderRequest" + orderRequest);
 
         // 3. 建立 OrderItems 並設置雙向關聯
         List<OrderItemDTO> items = orderRequest.getItems();
+        System.out.println("items" + items);
         items.forEach(itemDTO -> {
             Optional<Equipment> optEquipment = equipmentRepository.findById(itemDTO.getId());
             if (optEquipment.isPresent()) {
@@ -86,7 +89,6 @@ public class OrderServiceImpl implements OrderService{
         });
 
         // 4. 保存 Order（會級聯保存 OrderItems）
-
         orderRepository.save(order);
 
         // 5. 返回 DTO

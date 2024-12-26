@@ -66,19 +66,28 @@ public class UserServiceImpl implements UserService {
     //修改
     public Optional<UserDTO> update(Long userId, ChangeRequest changeRequest) {
         Optional<User> optUser = userRepository.findById(userId);
+
+
         if(optUser.isPresent()) {
 
             UserDTO userDTO = modelMapper.map(optUser.get(), UserDTO.class);
             if (userDTO.getPassword().equals(changeRequest.getPassword())) {
 
+
                 // 修改資料
-                userDTO.setPassword(changeRequest.getNewPassword());
+                if (changeRequest.getNewPassword().isEmpty()) {
+
+                }
+                else {
+                    userDTO.setPassword(changeRequest.getNewPassword());
+                }
+
                 userDTO.setTrueName(changeRequest.getTrueName());
 
                 // 存入
                 userRepository.save(modelMapper.map(userDTO, User.class));
 
-                return Optional.of(modelMapper.map(userDTO, UserDTO.class));
+                return Optional.of(userDTO);
             }
         }
        return Optional.empty();
