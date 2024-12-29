@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -137,5 +138,33 @@ public class UserController {
     }
 
     // 管理員
-    // 權限修改(升級 降級 自降)
+    // 權限修改(升級 降級)
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<UserDTO>>> getUsers(HttpSession session) {
+        UserDTO sessionuserdto = (UserDTO) session.getAttribute("userDTO");
+        if(sessionuserdto == null) {
+            return ResponseEntity.status(403).body(ApiResponse.error(403,"授權不足"));
+        }
+
+        List<UserDTO> userDTO =  userService.getAll();
+        if(userDTO.isEmpty()) {
+            ResponseEntity.status(403).body(ApiResponse.error(403,"程式出問題"));
+        }
+
+        return ResponseEntity.ok(ApiResponse.success("取得所有使用者資料成功", userDTO));
+    }
+
+    @GetMapping("/upgrade")
+    public ResponseEntity<ApiResponse<UserDTO>> upgrade(@RequestParam Long id, HttpSession session) {
+        UserDTO sessionuserdto = (UserDTO) session.getAttribute("userDTO");
+        if(sessionuserdto == null) {
+            return ResponseEntity.status(403).body(ApiResponse.error(403,"未登入"));
+        }
+
+        UserDTO userdto = userService.upgrade(id);
+        return ResponseEntity.ok(ApiResponse.success("修改成功", userdto));
+    }
+
+    // TODO
+    // 降級
 }

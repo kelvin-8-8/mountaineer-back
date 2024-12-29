@@ -118,7 +118,12 @@ public class OrderServiceImpl implements OrderService{
         Optional<Order> optOrder = orderRepository.findById(id);
 
         if (optOrder.isEmpty()) return null;
+        Order order = optOrder.get();
+        order.setStatus(STATUS_CANCEL);
 
-        return null;
+        OrderDTO orderdto = modelMapper.map(optOrder.get(), OrderDTO.class);
+        orderRepository.save(order);
+
+        return orderdto;
     }
 }
