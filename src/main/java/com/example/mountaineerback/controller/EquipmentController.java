@@ -53,9 +53,11 @@ public class EquipmentController {
 
     // TODO 還沒測試過
     // 新增裝備
-    @GetMapping("/add")
+    @PostMapping("/add")
     public ResponseEntity<ApiResponse<EquipmentDTO>> addEquipment(@RequestBody EquipmentRequest equipmentRequest) {
+        System.out.println(equipmentRequest);
         EquipmentDTO equipmentDTO =  equipmentService.addEquipment(equipmentRequest);
+        System.out.println(equipmentDTO);
         return ResponseEntity.ok(ApiResponse.success("新增裝備成功", equipmentDTO));
     }
 
